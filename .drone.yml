@@ -1,14 +1,66 @@
-kind: pipeline # 定义一个管道
-type: docker # 当前管道的类型
-name: build # 当前管道的名称
+kind: pipeline
+type: docker
+name: build
+
+platform:
+  os: linux
+  arch: amd64
+
+workspace:
+  path: /drone/src
+
+clone:
+  disable: true
 
 steps:
-  - name: test
-    image: golang
+  - name: clone
+    image: golang:latest
+    pull: if-not-exists
+    settings:
+      use_cache: true
+    environment:
+      GO111MODULE: on
+      GOPROXY: "https://goproxy.cn,direct"
+    volumes:
+      - name: go_mod
+        path: /drone/src/go
+      - name: run_docker
+        path: /var/run/docker.sock
     commands:
-      - go test
+      - pwd # 查看当前目录
+      - ls .
+      - git clone -v git@github.com:DanielZSY/DroneDemo.git dronedemo
+      - ls .
 
   - name: build
-    image: golang
+    image: golang:latest
+    depends_on: [clone]
+    settings:
+      repo: danielzsy/serviceapi
+      use_cache: true
+      username:
+        from_secret: dockername
+      password:
+        from_secret: dockerpwd
+    volumes:
+      - name: go_mod
+        path: /go
+      - name: run_docker
+        path: /var/run/docker.sock
     commands:
-      - go build
+      - pwd # 查看当前目录
+      - ls
+
+volumes:
+  - name: go_mod
+    host:
+      path: /data/go/drone
+  - name: run_docker
+    host:
+      path: /var/run/docker.sock
+
+trigger:
+  branch:
+    - main
+  event:
+    - push
