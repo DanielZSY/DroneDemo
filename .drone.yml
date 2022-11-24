@@ -9,8 +9,8 @@ platform:
 workspace:
   path: /drone/src
 
-clone:
-  disable: true
+#clone:
+#  disable: true
 
 steps:
   - name: clone
@@ -29,7 +29,7 @@ steps:
     commands:
       - pwd # 查看当前目录
       - ls .
-      - git clone -v git@github.com:DanielZSY/DroneDemo.git dronedemo
+#      - git clone -v git@github.com:DanielZSY/DroneDemo.git dronedemo
       - ls
 
   - name: build
