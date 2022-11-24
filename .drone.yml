@@ -24,7 +24,7 @@ steps:
       GOPROXY: "https://goproxy.cn,direct"
     volumes:
       - name: go_mod
-        path: /drone/src/go
+        path: /drone/src
       - name: run_docker
         path: /var/run/docker.sock
     commands:
@@ -46,7 +46,7 @@ steps:
         from_secret: dockerpwd
     volumes:
       - name: go_mod
-        path: /go
+        path: /drone/src
       - name: run_docker
         path: /var/run/docker.sock
     commands:
@@ -56,7 +56,7 @@ steps:
 volumes:
   - name: go_mod
     host:
-      path: /data/go/drone
+      path: /data/go
   - name: run_docker
     host:
       path: /var/run/docker.sock
