@@ -13,9 +13,10 @@ workspace:
 #  disable: true
 
 steps:
-  - name: clone
+  - name: build
     image: golang:latest
     pull: if-not-exists
+    depends_on: [clone]
     settings:
       use_cache: true
     environment:
@@ -32,9 +33,10 @@ steps:
 #      - git clone -v git@github.com:DanielZSY/DroneDemo.git dronedemo
       - ls
 
-  - name: build
+  - name: deploy
     image: golang:latest
-    depends_on: [clone]
+    pull: if-not-exists
+    depends_on: [build]
     settings:
       repo: danielzsy/serviceapi
       use_cache: true
