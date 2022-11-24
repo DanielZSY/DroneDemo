@@ -1,22 +1,14 @@
-kind: pipeline
-type: docker
-name: build
+kind: pipeline # 定义一个管道
+type: docker # 当前管道的类型
+name: build # 当前管道的名称
 
 steps:
-  - name: build
-    image: golang:alpine
-    pull: if-not-exists # always never
-    environment:
-      KEY: VALUE
+  - name: test
+    image: golang
     commands:
-      - echo $KEY
-      - echo pwd
-      - echo $pwd
-      - pwd
-      - ls
-      - CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o app .
-      - ./app
+      - go test
 
-trigger:
-  branch:
-    - main
+  - name: build
+    image: golang
+    commands:
+      - go build

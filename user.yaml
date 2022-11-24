@@ -1,0 +1,14 @@
+Name: user-api
+Host: 0.0.0.0
+Port: 6502
+Mode: dev
+Timeout: 10000
+
+#日志
+Log:
+  ServiceName: user-api
+  Level: info
+
+#jwtAuth
+JwtAuth:
+  AccessSecret: ae34fv69-45ty-46w2-hy76-5afg54gh7da0
